@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
+from django.contrib.auth.models import User
 from .models import Room, Topic
 from .forms import RoomForm
 
@@ -9,6 +12,31 @@ from .forms import RoomForm
 #     {"id": 2, "name": "Design with me"},
 #     {"id": 3, "name": "Frontend developers"},
 # ]
+
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            User.objects.get(username=username)
+        except:
+            messages.error(request, 'User does not exists.')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username or password does not exists')
+
+    context = {}
+    return render(request, 'base/login_register.html', context=context)
+
+
+def logoutPage(request):
+    logout(request)
+    return redirect('home')
 
 
 def home(request):
@@ -28,9 +56,7 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
-
     context = {"room": room}
-
     return render(request, 'base/room.html', context=context)
 
 
@@ -57,7 +83,6 @@ def updateRoom(request, pk):
         return redirect('home')
 
     context = {"form": form}
-
     return render(request, 'base/room_form.html', context=context)
 
 
