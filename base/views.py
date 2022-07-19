@@ -68,7 +68,7 @@ def home(request):
         Q(name__contains=q) |
         Q(description__contains=q)
     )
-    topics = Topic.objects.all()  # 获取所有表数据
+    topics = Topic.objects.all()[:5]  # 获取前5条数据
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
 
@@ -185,3 +185,12 @@ def updateProfile(request):
 
     context = {'form': form}
     return render(request, 'base/update_profile.html', context=context)
+
+
+def topics(request):
+    q = request.GET.get('q') if request.GET.get('q') is not None else ''
+
+    topics = Topic.objects.filter(name__contains=q)
+
+    context = {'topics': topics}
+    return render(request, 'base/topics.html', context=context)
