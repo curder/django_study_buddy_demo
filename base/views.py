@@ -17,15 +17,12 @@ from .forms import RoomForm, UserForm
 # ]
 
 def loginPage(request):
-    page = 'login'
-
     if request.user.is_authenticated:
         return redirect('home')
 
     if request.method == 'POST':
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
-
         try:
             User.objects.get(username=username)
         except:
@@ -38,8 +35,8 @@ def loginPage(request):
         else:
             messages.error(request, 'Username or password does not exists')
 
-    context = {'page': page}
-    return render(request, 'base/login_register.html', context=context)
+    context = {}
+    return render(request, 'base/login.html', context=context)
 
 
 def logoutPage(request):
@@ -61,7 +58,7 @@ def registerUser(request):
 
     form = UserCreationForm()
     context = {'form': form}
-    return render(request, 'base/login_register.html', context=context)
+    return render(request, 'base/register.html', context=context)
 
 
 def home(request):
@@ -181,7 +178,9 @@ def updateProfile(request):
     if request.method == 'POST':
         form = UserForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.username = user.username.lower()  # 用户名转换为小写
+            user.save()
             return redirect('profile.show', user.id)
 
     context = {'form': form}
