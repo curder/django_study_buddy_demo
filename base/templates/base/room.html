@@ -22,7 +22,7 @@
                         {% if request.user == room_message.user %}
                             <a href="{% url 'messages.destroy' room_message.id %}">Delete</a>
                         {% endif %}
-                        <small>@{{ room_message.user }} {{ room_message.created_at|timesince }} ago</small>
+                        <small><a href="{% url 'profile.show' room_message.user.id %}">@{{ room_message.user }}</a> {{ room_message.created_at|timesince }} ago</small>
                         <p>{{ room_message.body }}</p>
                         <hr>
                     </div>
@@ -43,7 +43,7 @@
             <hr>
             {% for user in participants %}
                 <div>
-                    <p>@{{ user.username }}</p>
+                    <p><a href="{% url 'profile.show' user.id %}">@{{ user.username }}</a></p>
                 </div>
             {% endfor %}
         </div>
