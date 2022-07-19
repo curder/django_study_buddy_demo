@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.contrib.auth.models import User
 from .models import Room, Topic, Message
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 
 
 # rooms = [
@@ -171,3 +171,18 @@ def destroyMessage(request, pk):
 
     context = {"obj": message}
     return render(request, 'base/destroy.html', context=context)
+
+
+@login_required(login_url='/login')
+def updateProfile(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile.show', user.id)
+
+    context = {'form': form}
+    return render(request, 'base/update_profile.html', context=context)
