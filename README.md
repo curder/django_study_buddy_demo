@@ -15,12 +15,13 @@ cd django_study_buddy_demo
 
 创建一个虚拟环境：
 ```bash
-python3 -m venv ./venv # 创建虚拟环境
+python3 -m venv ./.venv # 创建虚拟环境
 ```
 
 激活虚拟环境
 ```bash
-source ./venv/bin/activate 
+chmod +x ./.venv/bin/activate
+source ./.venv/bin/activate 
 ```
 
 升级依赖:
