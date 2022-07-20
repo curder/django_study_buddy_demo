@@ -1,4 +1,4 @@
-{% extends 'main.html' %}
+{% extends 'layouts/main.html' %}
 
 {% block content %}
     <main class="auth layout">
@@ -6,7 +6,7 @@
             <div class="layout__box">
                 <div class="layout__boxHeader">
                     <div class="layout__boxTitle">
-                        <h3>Login</h3>
+                        <h3>Sign up</h3>
                     </div>
                 </div>
                 <div class="layout__body">
@@ -14,15 +14,13 @@
 
                     <form class="form" action="" method="POST">
                         {% csrf_token %}
-                        <div class="form__group">
-                            <label for="id_email">Email</label>
-                            <input id="id_email" name="email" type="text" placeholder="e.g. curder@gmail.com" />
-                        </div>
-                        <div class="form__group">
-                            <label for="password">Password</label>
-                            <input id="password" name="password" type="password"
-                                   placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"/>
-                        </div>
+                        {% for field in form %}
+                            <div class="form__group form__group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <input id="{{ field.id_for_label }}" name="{{ field.name }}"
+                                       type="{{ field.widget_type }}"/>
+                            </div>
+                        {% endfor %}
 
                         <button class="btn btn--main" type="submit">
                             <svg
@@ -41,13 +39,13 @@
                                 ></path>
                             </svg>
 
-                            Login
+                            Sign Up
                         </button>
                     </form>
 
                     <div class="auth__action">
-                        <p>Haven't signed up yet?</p>
-                        <a href="{% url 'register' %}" class="btn btn--link">Sign Up</a>
+                        <p>Already have an account?</p>
+                        <a href="{% url 'login' %}" class="btn btn--link">Log In</a>
                     </div>
                 </div>
             </div>

@@ -11,16 +11,8 @@
 </head>
 
 <body>
-{% include "navbar.html" %}
-<div>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+{% include "partials/navbar.html" %}
+{% include 'partials/validate-message.html' %}
 {% block content %}
 {% endblock %}
 <script src="{% static 'js/app.js' %}"></script>

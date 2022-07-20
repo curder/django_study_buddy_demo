@@ -1,4 +1,4 @@
-{% extends 'main.html' %}
+{% extends 'layouts/main.html' %}
 {% block content %}
     <main class="profile-page layout layout--2">
         <div class="container">
@@ -6,7 +6,7 @@
             <div class="room">
                 <div class="room__top">
                     <div class="room__topLeft">
-                        <a href="{% url 'home' %}">
+                        <a href="{% url 'index' %}">
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                  viewBox="0 0 32 32">
                                 <title>arrow-left</title>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
                 <div class="room__message">
-                    <form action="{% url 'room' room.id %}" method="POST">
+                    <form action="{% url 'rooms.show' room.id %}" method="POST">
                         {% csrf_token %}
                         <input name="body" placeholder="Write your message here..."/>
                     </form>
